@@ -17,12 +17,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if ($_POST["q3"] == 6) {
     $puntaje = $puntaje + 1;
   }
-  if ($puntaje > 2) {
+  if ($puntaje >= 2) {
     header("Location: certificado.php");
     return;
   } else {
     $error = "no pasaste el examen";
-    return;
+    
   }
 };
 ?>
@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               <select class="form-select" name="q1" require aria-label="Default select example">
                 <option selected>Selecionar</option>
                 <option value="1">One</option>
-                <option value="2">Two</option>
+                <option value="2">2</option>
                 <option value="3">Three</option>
               </select>
 
@@ -69,6 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="6">6</option>
               </select>
             </div>
+            <button class="btn btn-primary">Enviar</button>
           </form>
         </div>
       </div>
