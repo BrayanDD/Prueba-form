@@ -7,22 +7,24 @@ if (!isset($_SESSION["user"])) {
   return;
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  // if (empty($_POST["name"]) || empty($_POST["phone_number"])) {
-  //   $error = "Please fill all the fields.";
-  // } else {
-    $name = $_POST["name"];
-    $phoneNumber = $_POST["phone_number"];
-    $statement = $conn->prepare("INSERT INTO contacts (name, phone_number, user_id) VALUES (:name, :phone_number, :user_id)");
-    $statement->bindParam(":name", $name);
-    $statement->bindParam(":phone_number", $phoneNumber);
-    $statement->bindParam(":user_id", $_SESSION['user']['id']);
-    $statement->execute();
-
-    $_SESSION["flash"] = ["mensaje" => "Contact {$_POST['name']}  added."];
-    header("Location: home.php");
+  $puntaje = 0;
+  if ($_POST["q1"] == 2) {
+    $puntaje = $puntaje + 1;
+  }
+  if ($_POST["q2"] == 4) {
+    $puntaje = $puntaje + 1;
+  }
+  if ($_POST["q3"] == 6) {
+    $puntaje = $puntaje + 1;
+  }
+  if ($puntaje > 2) {
+    header("Location: certificado.php");
     return;
-  // }
-}
+  } else {
+    $error = "no pasaste el examen";
+    return;
+  }
+};
 ?>
 <?php require "partials/header.php" ?>
 
@@ -40,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           <form method="POST" action="add.php">
             <div class="mb-3 row">
               <h2>Cuanto es 1 + 1</h2>
-              <select class="form-select"  require aria-label="Default select example">
+              <select class="form-select" name="q1" require aria-label="Default select example">
                 <option selected>Selecionar</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -51,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="mb-3 row">
               <h2>Cuanto es 2 + 2</h2>
-              <select class="form-select" require  aria-label="Default select example">
+              <select class="form-select" require name="q2" aria-label="Default select example">
                 <option selected>Selecionar</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
@@ -60,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
             <div class="mb-3 row">
               <h2>Cuanto es 3 + 3</h2>
-              <select class="form-select"  require  aria-label="Default select example">
+              <select class="form-select" require name="q3" aria-label="Default select example">
                 <option selected>Selecionar</option>
                 <option value="1">One</option>
                 <option value="2">Two</option>
