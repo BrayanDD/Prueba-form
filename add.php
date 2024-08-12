@@ -2,12 +2,13 @@
 require "db.php";
 $error = null;
 session_start();
+
 if (!isset($_SESSION["user"])) {
   header("Location: login.php");
   return;
 }
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (!isset($_POST["q1"]) || !isset($_POST["q2"]) || !isset($_POST["q3"])) {
     $error = "Por favor, responde todas las preguntas.";
   } else {
@@ -22,11 +23,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $puntaje++;
     }
     if ($puntaje >= 2) {
-      $_SESSION["exam_passed"] = true;
+      $_SESSION["flash"] = [
+        "exam_passed" => true,
+        "message" => "Pasaste la prueba satisfactoriamente. ¡Ya puedes descargar tu diploma!",
+        "type" => "success"
+      ];
       header("Location: certificado.php");
       return;
     } else {
-      $error = "No pasaste el examen.";
+      $_SESSION["flash"] = [
+        "exam_passed" => false,
+        "message" => "No pasaste la prueba. Refuerza tus conocimientos.",
+        "type" => "danger"
+      ];
+      header("Location: home.php");
+      return;
     }
   }
 }
@@ -40,37 +51,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="card-header">Examen</div>
         <div class="card-body">
           <?php if ($error) : ?>
-            <p class="danger">
+            <p class="text-danger">
               <?= $error ?>
             </p>
           <?php endif ?>
           <form method="POST" action="add.php">
             <div class="mb-3 row">
-              <h2>Cuanto es 1 + 1</h2>
+              <h2>¿Cuánto es 1 + 1?</h2>
               <select class="form-select" name="q1" required aria-label="Default select example">
-                <option selected disabled>Selecionar</option>
-                <option value="1">One</option>
+                <option selected disabled>Seleccionar</option>
+                <option value="1">Uno</option>
                 <option value="2">2</option>
-                <option value="3">Three</option>
+                <option value="3">Tres</option>
               </select>
-
             </div>
-
             <div class="mb-3 row">
-              <h2>Cuanto es 2 + 2</h2>
+              <h2>¿Cuánto es 2 + 2?</h2>
               <select class="form-select" required name="q2" aria-label="Default select example">
-                <option selected disabled>Selecionar</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
+                <option selected disabled>Seleccionar</option>
+                <option value="1">Uno</option>
+                <option value="2">Dos</option>
                 <option value="4">4</option>
               </select>
             </div>
             <div class="mb-3 row">
-              <h2>Cuanto es 3 + 3</h2>
+              <h2>¿Cuánto es 3 + 3?</h2>
               <select class="form-select" required name="q3" aria-label="Default select example">
-                <option selected  disabled>Selecionar</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
+                <option selected disabled>Seleccionar</option>
+                <option value="1">Uno</option>
+                <option value="2">Dos</option>
                 <option value="6">6</option>
               </select>
             </div>
@@ -81,4 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
   </div>
 </div>
+
+
+
 <?php require "partials/footer.php" ?>

@@ -4,7 +4,7 @@ if (!isset($_SESSION["user"])) {
   header("Location: login.php");
   return;
 }
-if (!isset($_SESSION["exam_passed"]) || !$_SESSION["exam_passed"]) {
+if (!isset($_SESSION["flash"]["exam_passed"] ) ) {
   header("Location: home.php");
   return;
 }
