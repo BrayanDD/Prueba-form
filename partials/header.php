@@ -20,11 +20,8 @@
             
 
         <div class="container mt-4">
-        <div class="alert alert-<?= $_SESSION["flash"]["type"] ?> d-flex align-items-center" role="alert">
-            
-            <div class="ml-2">
-            <?= $_SESSION["flash"]["message"] ?>
-            </div>
+         <?php require __DIR__ . '/../components/alerts.php'; ?>
+
         </div>
         </div>
         <?php unset($_SESSION["flash"]) ?>
